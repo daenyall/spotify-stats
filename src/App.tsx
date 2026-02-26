@@ -73,12 +73,26 @@ function App() {
             Spotify<span className="text-[#1DB954]">Stats</span>
           </a>
 
-          <div className="flex space-x-8 text-sm font-medium">
-            <a href="#" className="text-white hover:text-[#1DB954] transition-colors">Profil</a>
-            <a href="#" className="text-zinc-400 hover:text-[#1DB954] transition-colors">Top Artyści</a>
-            <a href="#" className="text-zinc-400 hover:text-[#1DB954] transition-colors">Ostatnio Odtwarzane</a>
-          </div>
-        </div>
+      <div className="flex space-x-8 text-sm font-medium items-center">
+  <a href="#" className="relative group px-4 py-2 text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-lg transition-colors">
+        <span className="relative z-10">Profil</span>
+    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-[#1DB954] shadow-[0_0_12px_2px_rgba(29,185,84,0.8)] transition-all duration-300 ease-out group-hover:h-full"></span>
+    <span className="absolute right-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-[#1DB954] shadow-[0_0_12px_2px_rgba(29,185,84,0.8)] transition-all duration-300 ease-out group-hover:h-full"></span>
+  </a>
+  <a href="#" className="relative group px-4 py-2 text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-lg transition-colors">
+        <span className="relative z-10">Top Artyści</span>
+    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-[#1DB954] shadow-[0_0_12px_2px_rgba(29,185,84,0.8)] transition-all duration-300 ease-out group-hover:h-full"></span>
+    <span className="absolute right-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-[#1DB954] shadow-[0_0_12px_2px_rgba(29,185,84,0.8)] transition-all duration-300 ease-out group-hover:h-full"></span>
+  </a>
+  
+
+  <a href="#" className="relative group px-4 py-2 text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-lg transition-colors">
+    <span className="relative z-10">Ostatnio Odtwarzane</span>
+    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-[#1DB954] shadow-[0_0_12px_2px_rgba(29,185,84,0.8)] transition-all duration-300 ease-out group-hover:h-full"></span>
+    <span className="absolute right-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-[#1DB954] shadow-[0_0_12px_2px_rgba(29,185,84,0.8)] transition-all duration-300 ease-out group-hover:h-full"></span>
+  </a>
+</div>
+</div>
       </nav>
 
    
