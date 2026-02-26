@@ -40,6 +40,7 @@ export async function redirectToAuthCodeFlow(clientId: string) {
 }
 
 
+
 export async function getAccessToken(clientId: string, code: string): Promise<string> {
     const verifier = localStorage.getItem("verifier");
 
