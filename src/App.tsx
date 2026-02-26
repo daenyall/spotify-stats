@@ -63,31 +63,70 @@ function App() {
 
 
   return (
-    <div className="flex container bg-teal-950 ">
-    <div className='flex justify-content: center"'>
-      {profile ? (
-        <section id="profile" style={{ marginTop: '20px' }}>
-          <h2>Zalogowano jako <span>{profile.display_name}</span></h2>
+    
+<div className="flex flex-col min-h-screen bg-zinc-900 text-white">
+      
+ 
+      <nav className="bg-zinc-900/95 border-b border-zinc-800 sticky top-0 start-0 z-50 w-full p-4">
+        <div className="max-w-8xl mx-auto flex justify-between">
+          <a href="#" className="text-2xl font-bold text-white tracking-wider ">
+            Spotify<span className="text-[#1DB954]">Stats</span>
+          </a>
 
-          {profile.images?.[0] && (
-            <img
-              src={profile.images[0].url}
-              alt="Awatar użytkownika"
-              style={{ width: '200px', height: '200px', borderRadius: '50%' }}
-            />
-          )}
+          <div className="flex space-x-8 text-sm font-medium">
+            <a href="#" className="text-white hover:text-[#1DB954] transition-colors">Profil</a>
+            <a href="#" className="text-zinc-400 hover:text-[#1DB954] transition-colors">Top Artyści</a>
+            <a href="#" className="text-zinc-400 hover:text-[#1DB954] transition-colors">Ostatnio Odtwarzane</a>
+          </div>
+        </div>
+      </nav>
 
-          <ul>
-            <li>User ID: <span>{profile.id}</span></li>
-            <li>Email: <span>{profile.email}</span></li>
-            <li>Spotify URI: <a href={profile.external_urls?.spotify}>{profile.uri}</a></li>
-            <li>Link: <a href={profile.href}>{profile.href}</a></li>
-          </ul>
-        </section>
-      ) : (
-        <p>Ładowanie danych z profilu...</p>
-      )}
-</div>
+   
+      <div className="flex-grow flex flex-col justify-center items-center p-6">
+        {profile ? (
+          <section className="bg-zinc-800/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl max-w-md w-full border border-zinc-700/50 flex flex-col items-center">
+            
+            {profile.images?.[0] && (
+              <div className="relative mb-6">
+                <img 
+                  src={profile.images[0].url} 
+                  alt="Awatar użytkownika" 
+                  className="w-32 h-32 rounded-full object-cover border-4 border-[#1DB954] shadow-[0_0_20px_rgba(29,185,84,0.4)]" 
+                />
+              </div>
+            )}
+
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              Cześć, <span className="text-[#1DB954]">{profile.display_name}</span>!
+            </h2>
+            
+            <ul className="w-full space-y-4 text-sm">
+              <li className="flex justify-between items-center border-b border-zinc-700/50 pb-3">
+                <span className="text-zinc-400">User ID</span>
+                <span className="font-mono text-xs truncate ml-4">{profile.id}</span>
+              </li>
+              <li className="flex justify-between items-center border-b border-zinc-700/50 pb-3">
+                <span className="text-zinc-400">Email</span>
+                <span className="truncate ml-4">{profile.email}</span>
+              </li>
+              <li className="flex justify-between items-center pt-1">
+                <span className="text-zinc-400">Spotify Link</span>
+                <a 
+                  href={profile.external_urls?.spotify} 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="text-[#1DB954] hover:text-white transition-colors truncate ml-4"
+                >
+                  Otwórz profil ↗
+                </a>
+              </li>
+            </ul>
+          </section>
+        ) : (
+          <div className="text-zinc-400 animate-pulse">Ładowanie...</div>
+        )}
+      </div>
+
     </div>
   );
 }
