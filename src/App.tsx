@@ -37,7 +37,6 @@ function App() {
             const recentlyPlayedData = await fetchRecentlyPlayed(accessToken);
             setRecentlyPlayed(recentlyPlayedData.items);
             
-            // Tutaj nic nie zmieniamy, wszystko było dobrze:
             const genresData = await fetchTopGenres(accessToken);
             setGenres(genresData);
             
@@ -162,7 +161,6 @@ function App() {
             <TopGenres genres={genres}/>
           </div>
         <Routes>
-        <Route path='/' element={<App/>}/>
         <Route path="/profile" element={<Profile profile={profile} />} />
         <Route path='/tracks' element={<TopTracks tracks={tracks}/>} /> 
         <Route path='/recently-played' element={<RecentlyPlayed recentlyPlayed={recentlyPlayed}/>} />
