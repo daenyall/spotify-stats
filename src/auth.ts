@@ -30,7 +30,7 @@ export async function redirectToAuthCodeFlow(clientId: string) {
     params.append("client_id", clientId);
     params.append("response_type", "code");
  
-    params.append("redirect_uri", "http://127.0.0.1:5173/callback"); 
+    params.append("redirect_uri", "window.location.origin + '/'"); 
  
     params.append("scope", "user-read-private user-read-email user-top-read user-read-recently-played");
     params.append("code_challenge_method", "S256");
@@ -48,7 +48,7 @@ export async function getAccessToken(clientId: string, code: string): Promise<st
     params.append("client_id", clientId);
     params.append("grant_type", "authorization_code");
     params.append("code", code);
-    params.append("redirect_uri", "http://127.0.0.1:5173/callback");
+    params.append("redirect_uri", "window.location.origin + '/'");
     params.append("code_verifier", verifier!);
 
     const result = await fetch("https://accounts.spotify.com/api/token", {
