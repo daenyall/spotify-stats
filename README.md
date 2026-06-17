@@ -1,73 +1,51 @@
-# React + TypeScript + Vite
+# Spotify Stats
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplikacja webowa pozwalająca użytkownikom na logowanie się za pomocą konta Spotify i przeglądanie swoich spersonalizowanych statystyk muzycznych. Projekt zbudowany w oparciu o React, TypeScript oraz Vite.
 
-Currently, two official plugins are available:
+## Funkcjonalności
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* Autoryzacja użytkownika z wykorzystaniem Spotify OAuth.
+* Wyświetlanie danych profilowych.
+* Analiza i prezentacja najczęściej słuchanych artystów i utworów.
+* Zestawienie ulubionych gatunków muzycznych.
+* Podgląd ostatnio odtwarzanych utworów.
 
-## React Compiler
+## Technologie
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* React
+* TypeScript
+* Vite
 
-## Expanding the ESLint configuration
+## Wymagania wstępne
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Aby uruchomić projekt lokalnie, będziesz potrzebować:
+* Node.js zainstalowanego w systemie.
+* Zarejestrowanej aplikacji w panelu [Spotify for Developers](https://developer.spotify.com/dashboard), aby uzyskać `Client ID`. W ustawieniach aplikacji Spotify jako `Redirect URI` podaj `http://localhost:5173/`.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Uruchomienie lokalne
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. Sklonuj repozytorium:
+   ```bash
+   git clone <link_do_repozytorium>
+   ```
+2. Przejdź do folderu z projektem i zainstaluj zależności:
+```bash
+cd spotify-stats
+npm install
+```
+3. Skonfiguruj zmienne środowiskowe:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Stwórz w głównym folderze projektu plik o nazwie .env
+
+Skopiuj zawartość z pliku .env.example
+
+Podmień wartość na swój klucz ze Spotify:
+VITE_SPOTIFY_CLIENT_ID=twoj_klucz_tutaj
+
+4. Uruchom serwer deweloperski:
+
+```bash
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+4. Otwórz w przeglądarce adres podany w konsoli (domyślnie http://localhost:5173/).
