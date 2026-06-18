@@ -36,7 +36,6 @@ const FEATURE_MAP: {
 
 export default function AudioVibe({ token }: AudioVibeProps) {
   const [loading, setLoading] = useState(true);
-  const [denied, setDenied] = useState(false);
   const [chartData, setChartData] = useState<FeatureEntry[]>([]);
   const [averages, setAverages] = useState<Record<string, number>>({});
 
@@ -52,21 +51,21 @@ export default function AudioVibe({ token }: AudioVibeProps) {
       const trackIds = tracks.map((t: any) => t.id).filter(Boolean);
       const features = await fetchAudioFeatures(token, trackIds);
 
-      let featuresData = features;
-      if (features === null) {
+      let featuresData: any[] = features || [];
+      if (features === null || featuresData.length === 0) {
         // MOCK DATA for portfolio presentation (bypassing Spotify's 2024 Extended Quota limitation)
         featuresData = [
           { danceability: 0.75, energy: 0.82, valence: 0.65, acousticness: 0.12, instrumentalness: 0.05, liveness: 0.18, speechiness: 0.05 },
           { danceability: 0.68, energy: 0.78, valence: 0.55, acousticness: 0.20, instrumentalness: 0.10, liveness: 0.22, speechiness: 0.04 },
           { danceability: 0.85, energy: 0.90, valence: 0.80, acousticness: 0.05, instrumentalness: 0.01, liveness: 0.15, speechiness: 0.06 },
           { danceability: 0.60, energy: 0.65, valence: 0.45, acousticness: 0.40, instrumentalness: 0.02, liveness: 0.10, speechiness: 0.08 },
-        ] as any[];
+        ];
       }
 
       // Calculate averages
       const avgs: Record<string, number> = {};
       FEATURE_MAP.forEach(({ key }) => {
-        const sum = featuresData.reduce((acc: number, f: AudioFeaturesData) => acc + (f[key] || 0), 0);
+        const sum = featuresData.reduce((acc: number, f: any) => acc + (f[key] || 0), 0);
         avgs[key] = featuresData.length > 0 ? sum / featuresData.length : 0;
       });
 
@@ -128,101 +127,6 @@ export default function AudioVibe({ token }: AudioVibeProps) {
     );
   }
 
-  /* ── 403 Fallback UI ────────────────────────────────────── */
-  if (denied) {
-    return (
-      <div className="animate-fade-in-up" style={{ padding: '2rem 0' }}>
-        <h3 className="section-title">
-          Twój <span className="accent">Vibe</span>
-        </h3>
-        <div
-          className="glass-card"
-          style={{
-            padding: '3rem 2rem',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '1.25rem',
-            textAlign: 'center',
-            minHeight: '280px',
-            background: 'linear-gradient(135deg, rgba(26,26,37,0.95), rgba(18,18,26,0.95))',
-            border: '1px solid rgba(255,255,255,0.06)',
-            position: 'relative',
-            overflow: 'hidden',
-          }}
-        >
-          {/* Background glow */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '-40%',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '300px',
-              height: '300px',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(29,185,84,0.06) 0%, transparent 70%)',
-              pointerEvents: 'none',
-            }}
-          />
-          {/* Lock icon */}
-          <div
-            style={{
-              width: '72px',
-              height: '72px',
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, rgba(29,185,84,0.15), rgba(29,185,84,0.05))',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '2rem',
-              border: '1px solid rgba(29,185,84,0.2)',
-            }}
-          >
-            🔒
-          </div>
-          <h4
-            style={{
-              color: '#f0f0f5',
-              fontSize: '1.1rem',
-              fontWeight: 700,
-              margin: 0,
-            }}
-          >
-            Ograniczony dostęp
-          </h4>
-          <p
-            style={{
-              color: '#8888a0',
-              fontSize: '0.9rem',
-              lineHeight: 1.6,
-              maxWidth: '420px',
-              margin: 0,
-            }}
-          >
-            Ten ficzer wymaga rozszerzonego dostępu do API Spotify
-            (Extended Quota Mode).
-          </p>
-          <div
-            style={{
-              marginTop: '0.5rem',
-              padding: '0.5rem 1.25rem',
-              borderRadius: '999px',
-              background: 'rgba(29,185,84,0.08)',
-              border: '1px solid rgba(29,185,84,0.15)',
-              color: '#1DB954',
-              fontSize: '0.8rem',
-              fontWeight: 600,
-              letterSpacing: '0.02em',
-            }}
-          >
-            Audio Features API
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   /* ── No data ────────────────────────────────────────────── */
   if (chartData.length === 0) {
