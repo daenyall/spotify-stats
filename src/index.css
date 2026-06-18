@@ -206,3 +206,126 @@ body {
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
+
+/* ===== Mini Audio Player (Discover) ===== */
+@keyframes eq-bar-1 {
+  0%, 100% { height: 30%; }
+  50% { height: 100%; }
+}
+
+@keyframes eq-bar-2 {
+  0%, 100% { height: 60%; }
+  50% { height: 30%; }
+}
+
+@keyframes eq-bar-3 {
+  0%, 100% { height: 80%; }
+  50% { height: 50%; }
+}
+
+.equalizer-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 16px;
+}
+
+.equalizer-bars .bar {
+  width: 3px;
+  border-radius: 1px;
+  background: #1DB954;
+}
+
+.equalizer-bars .bar:nth-child(1) {
+  animation: eq-bar-1 0.6s ease-in-out infinite;
+}
+
+.equalizer-bars .bar:nth-child(2) {
+  animation: eq-bar-2 0.5s ease-in-out infinite 0.1s;
+}
+
+.equalizer-bars .bar:nth-child(3) {
+  animation: eq-bar-3 0.7s ease-in-out infinite 0.2s;
+}
+
+/* Audio progress bar */
+.audio-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1DB954, #1ed760);
+  border-radius: 0 0 20px 20px;
+  transition: width 0.1s linear;
+}
+
+/* ===== Slide Down Animation (Playlist Detail) ===== */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 600px;
+  }
+}
+
+.animate-slide-down {
+  animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ===== Fade In Scale (for chart) ===== */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ===== Glass Card without hover transform ===== */
+.glass-card-static {
+  background: linear-gradient(135deg, rgba(26, 26, 37, 0.8), rgba(18, 18, 26, 0.6));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== Recharts Overrides (dark theme) ===== */
+.recharts-polar-grid-concentric-polygon {
+  stroke: rgba(255, 255, 255, 0.06) !important;
+}
+
+.recharts-polar-grid-angle line {
+  stroke: rgba(255, 255, 255, 0.04) !important;
+}
+
+.recharts-text.recharts-polar-angle-axis-tick-value {
+  fill: #8888a0 !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+}
+
+/* ===== Responsive Helpers ===== */
+@media (max-width: 768px) {
+  .responsive-grid-2col {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .section-title {
+    font-size: 1.4rem;
+  }
+}
+

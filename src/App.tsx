@@ -1,12 +1,74 @@
 import { useEffect, useState, useRef } from 'react';
 import { redirectToAuthCodeFlow, getAccessToken } from './auth';
+import {
+  fetchProfile,
+  fetchTopTracks,
+  fetchTopArtists,
+  fetchRecentlyPlayed,
+  fetchTopGenres,
+} from './spotifyApi';
 import Profile from './Profile';
 import TopTracks from './TopTracks';
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import TopArtists from './TopArtists';
 import RecentlyPlayed from './RecentlyPlayed';
 import TopGenres from './TopGenres';
-import TopArtists from './TopArtists';
+import AudioVibe from './AudioVibe';
+import TimeMachine from './TimeMachine';
+import Discover from './Discover';
+import PlaylistAnalyzer from './PlaylistAnalyzer';
+import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+
+/* ── Nav Icon SVGs ─────────────────────────────────────────── */
+function DashboardIcon({ color }: { color: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+      <rect x="14" y="14" width="7" height="7" rx="1" />
+    </svg>
+  );
+}
+
+function VibeIcon({ color }: { color: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+    </svg>
+  );
+}
+
+function TimeIcon({ color }: { color: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>
+  );
+}
+
+function DiscoverIcon({ color }: { color: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+    </svg>
+  );
+}
+
+function PlaylistIcon({ color }: { color: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 15V6" />
+      <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+      <path d="M12 12H3" />
+      <path d="M16 6H3" />
+      <path d="M12 18H3" />
+    </svg>
+  );
+}
 
 /* ── Navbar ───────────────────────────────────────────────── */
 function Navbar() {
@@ -20,10 +82,11 @@ function Navbar() {
   }, []);
 
   const navLinks = [
-    { to: '/', label: 'Dashboard' },
-    { to: '/profile', label: 'Profil' },
-    { to: '/tracks', label: 'Top Piosenki' },
-    { to: '/recently-played', label: 'Historia' },
+    { to: '/', label: 'Dashboard', Icon: DashboardIcon },
+    { to: '/vibe', label: 'Twój Vibe', Icon: VibeIcon },
+    { to: '/time-machine', label: 'Wehikuł Czasu', Icon: TimeIcon },
+    { to: '/discover', label: 'Odkrywaj', Icon: DiscoverIcon },
+    { to: '/playlists', label: 'Playlisty', Icon: PlaylistIcon },
   ];
 
   return (
@@ -67,6 +130,7 @@ function Navbar() {
       <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
         {navLinks.map((link) => {
           const isActive = location.pathname === link.to;
+          const iconColor = isActive ? '#1DB954' : '#8888a0';
           return (
             <Link
               key={link.to}
@@ -83,6 +147,7 @@ function Navbar() {
                 transition: 'all 0.25s ease',
                 display: 'flex',
                 alignItems: 'center',
+                gap: '6px',
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
@@ -97,6 +162,7 @@ function Navbar() {
                 }
               }}
             >
+              <link.Icon color={iconColor} />
               {link.label}
             </Link>
           );
@@ -263,8 +329,10 @@ function LoginScreen() {
           display: 'flex',
           gap: '0.75rem',
           marginTop: '0.5rem',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
         }}>
-          {['Piosenki', 'Artyści', 'Gatunki', 'Historia'].map((label, i) => (
+          {['Vibe', 'Wehikuł Czasu', 'Odkrywaj', 'Playlisty'].map((label, i) => (
             <span key={label} className="animate-fade-in" style={{
               color: '#55556a',
               fontSize: '0.75rem',
@@ -298,97 +366,53 @@ function App() {
 
   const hasFetchedToken = useRef(false);
 
+  const loadDashboardData = async (accessToken: string) => {
+    try {
+      const profileData = await fetchProfile(accessToken);
+      setProfile(profileData);
+      const tracksData = await fetchTopTracks(accessToken);
+      setTracks(tracksData);
+      const recentlyPlayedData = await fetchRecentlyPlayed(accessToken);
+      setRecentlyPlayed(recentlyPlayedData);
+      const artistsData = await fetchTopArtists(accessToken);
+      setArtists(artistsData);
+      const genresData = await fetchTopGenres(accessToken);
+      setGenres(genresData);
+      
+      setToken(accessToken);
+      localStorage.setItem('spotify_access_token', accessToken);
+    } catch (err) {
+      console.error("Błąd podczas ładowania danych z tokena:", err);
+      // Jeśli token wygasł lub jest zły, usuwamy go i wymuszamy logowanie
+      localStorage.removeItem('spotify_access_token');
+      setToken(null);
+    }
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
 
     if (code && !hasFetchedToken.current) {
       hasFetchedToken.current = true;
-
       getAccessToken(clientId, code)
         .then(async (accessToken) => {
           if (accessToken) {
             window.history.replaceState({}, document.title, "/");
-
-            const profileData = await fetchProfile(accessToken);
-            setProfile(profileData);
-            const tracksData = await fetchTopTracks(accessToken);
-            setTracks(tracksData.items);
-            const recentlyPlayedData = await fetchRecentlyPlayed(accessToken);
-            setRecentlyPlayed(recentlyPlayedData.items);
-            const artistsData = await fetchTopArtists(accessToken);
-            setArtists(artistsData.items);
-            
-            const genresData = await fetchTopGenres(accessToken);
-            setGenres(genresData);
-
-            setToken(accessToken);
+            await loadDashboardData(accessToken);
           } else {
-            console.error("Nie udało się pobrać tokenu (np. kod wygasł).");
+            console.error("Nie udało się pobrać tokenu.");
           }
         })
-        .catch(err => {
-          console.error("Wystąpił błąd podczas autoryzacji:", err);
-        });
+        .catch(err => console.error("Wystąpił błąd podczas autoryzacji:", err));
+    } else if (!code && !token) {
+      // Sprawdzamy czy mamy token w localStorage
+      const savedToken = localStorage.getItem('spotify_access_token');
+      if (savedToken) {
+        loadDashboardData(savedToken);
+      }
     }
-  }, []);
-
-  async function fetchProfile(token: string): Promise<any> {
-    const result = await fetch("https://api.spotify.com/v1/me", {
-      method: "GET", headers: { Authorization: `Bearer ${token}` }
-    });
-    return await result.json();
-  }
-  async function fetchTopTracks(token: string) {
-    const response = await fetch("https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=50", {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` }
-    });
-
-    return await response.json();
-  }
-  async function fetchRecentlyPlayed(token: string) {
-  const response = await fetch("https://api.spotify.com/v1/me/player/recently-played?limit=20", {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  return await response.json();
-}
-
-
-  async function fetchTopArtists(token: string) {
-  const response = await fetch("https://api.spotify.com/v1/me/top/artists?limit=30", {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  return await response.json();
-}
-
-  async function fetchTopGenres(token: string) {
-    const response = await fetch("https://api.spotify.com/v1/me/top/artists?limit=50", {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const data = await response.json();
-
-    const genreCounts: Record<string, number> = {};
-    if (data.items) {
-      data.items.forEach((artist: any) => {
-        if (artist.genres) {
-          artist.genres.forEach((genre: string) => {
-            genreCounts[genre] = (genreCounts[genre] || 0) + 1;
-          });
-        }
-      });
-    }
-
-    const topGenres = Object.entries(genreCounts)
-      .sort((a, b) => b[1] - a[1])
-      .map(entry => entry[0])
-      .slice(0, 15);
-
-    return topGenres;
-  }
+  }, [token]);
 
   if (!token) {
     return <LoginScreen />;
@@ -414,9 +438,10 @@ function App() {
                 genres={genres}
               />
             } />
-            <Route path="/profile" element={<Profile profile={profile} />} />
-            <Route path="/tracks" element={<TopTracks tracks={tracks} />} />
-            <Route path="/recently-played" element={<RecentlyPlayed recentlyPlayed={recentlyPlayed} />} />
+            <Route path="/vibe" element={<AudioVibe token={token} />} />
+            <Route path="/time-machine" element={<TimeMachine token={token} />} />
+            <Route path="/discover" element={<Discover token={token} />} />
+            <Route path="/playlists" element={<PlaylistAnalyzer token={token} />} />
           </Routes>
         </main>
 
