@@ -24,14 +24,14 @@ interface FeatureEntry {
 const FEATURE_MAP: {
   key: keyof AudioFeaturesData;
   label: string;
-  emoji: string;
+  
 }[] = [
-  { key: 'danceability', label: 'Taneczność', emoji: '💃' },
-  { key: 'energy', label: 'Energia', emoji: '⚡' },
-  { key: 'valence', label: 'Pozytywność', emoji: '😊' },
-  { key: 'acousticness', label: 'Akustyczność', emoji: '🎸' },
-  { key: 'instrumentalness', label: 'Instrumentalność', emoji: '🎹' },
-  { key: 'liveness', label: 'Żywość', emoji: '🎤' },
+  { key: 'danceability', label: 'Taneczność' },
+  { key: 'energy', label: 'Energia' },
+  { key: 'valence', label: 'Pozytywność' },
+  { key: 'acousticness', label: 'Akustyczność' },
+  { key: 'instrumentalness', label: 'Instrumentalność' },
+  { key: 'liveness', label: 'Żywość' },
 ];
 
 export default function AudioVibe({ token }: AudioVibeProps) {
@@ -243,7 +243,7 @@ export default function AudioVibe({ token }: AudioVibeProps) {
           gap: '1rem',
         }}
       >
-        {FEATURE_MAP.map(({ key, label, emoji }, index) => {
+        {FEATURE_MAP.map(({ key, label  }, index) => {
           const value = averages[key] || 0;
           const percentage = (value * 100).toFixed(1);
 
@@ -279,7 +279,7 @@ export default function AudioVibe({ token }: AudioVibeProps) {
                   alignItems: 'center',
                 }}
               >
-                <span style={{ fontSize: '1.5rem' }}>{emoji}</span>
+                
                 <span
                   style={{
                     fontSize: '1.25rem',

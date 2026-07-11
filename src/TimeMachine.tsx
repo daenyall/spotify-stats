@@ -382,7 +382,6 @@ export default function TimeMachine({ token }: TimeMachineProps) {
         {/* Left column — Top Piosenki */}
         <div className="glass-card" style={cardStyle}>
           <div style={columnTitleStyle}>
-            <span style={{ fontSize: '1.2rem' }}>🎵</span>
             <span>Top Piosenki</span>
           </div>
           {loading ? (
@@ -401,7 +400,7 @@ export default function TimeMachine({ token }: TimeMachineProps) {
         {/* Right column — Top Artyści */}
         <div className="glass-card" style={cardStyle}>
           <div style={columnTitleStyle}>
-            <span style={{ fontSize: '1.2rem' }}>🎤</span>
+            
             <span>Top Artyści</span>
           </div>
           {loading ? (

@@ -453,7 +453,7 @@ function App() {
           fontSize: '0.8rem',
           borderTop: '1px solid rgba(255,255,255,0.04)',
         }}>
-          Zbudowane z 💚 przy pomocy Spotify API
+         
         </footer>
       </div>
     </BrowserRouter>
