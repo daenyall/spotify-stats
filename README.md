@@ -1,51 +1,94 @@
 # Spotify Stats
 
-Aplikacja webowa pozwalająca użytkownikom na logowanie się za pomocą konta Spotify i przeglądanie swoich spersonalizowanych statystyk muzycznych. Projekt zbudowany w oparciu o React, TypeScript oraz Vite.
+A web application that lets users explore their personal Spotify listening statistics through a simple, interactive interface.
 
-## Funkcjonalności
+Built with **React, TypeScript, and Vite**, the application integrates with the Spotify Web API to retrieve and visualize listening data.
 
-* Autoryzacja użytkownika z wykorzystaniem Spotify OAuth.
-* Wyświetlanie danych profilowych.
-* Analiza i prezentacja najczęściej słuchanych artystów i utworów.
-* Zestawienie ulubionych gatunków muzycznych.
-* Podgląd ostatnio odtwarzanych utworów.
+## Features
 
-## Technologie
+- **Spotify OAuth** — Sign in securely with a Spotify account.
+- **User Profile** — View Spotify account information.
+- **Top Artists & Tracks** — Discover your most-listened-to artists and songs.
+- **Top Genres** — Explore your music preferences through genre statistics.
+- **Recently Played** — View your recent listening history.
+- **Data Visualization** — Explore listening statistics using Recharts.
 
-* React
-* TypeScript
-* Vite
+## Tech Stack
 
-## Wymagania wstępne
+- **React 19** — User interface
+- **TypeScript** — Type-safe development
+- **Vite** — Development and build tooling
+- **Spotify Web API** — Listening data and authentication
+- **React Router** — Client-side navigation
+- **Recharts** — Data visualization
+- **Tailwind CSS / Bootstrap** — Styling
 
-Aby uruchomić projekt lokalnie, będziesz potrzebować:
-* Node.js zainstalowanego w systemie.
-* Zarejestrowanej aplikacji w panelu [Spotify for Developers](https://developer.spotify.com/dashboard), aby uzyskać `Client ID`. W ustawieniach aplikacji Spotify jako `Redirect URI` podaj `http://localhost:5173/`.
+## Getting Started
 
-## Uruchomienie lokalne
+### Prerequisites
 
-1. Sklonuj repozytorium:
-   ```bash
-   git clone <link_do_repozytorium>
-   ```
-2. Przejdź do folderu z projektem i zainstaluj zależności:
+Before running the application, make sure you have:
+
+- Node.js and npm installed.
+- A Spotify account.
+- An application registered in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard).
+
+### Installation
+
+**1. Clone the repository**
+
 ```bash
+git clone https://github.com/daenyall/spotify-stats.git
 cd spotify-stats
+```
+
+**2. Install dependencies**
+
+```bash
 npm install
 ```
-3. Skonfiguruj zmienne środowiskowe:
 
-Stwórz w głównym folderze projektu plik o nazwie .env
+**3. Configure environment variables**
 
-Skopiuj zawartość z pliku .env.example
+Create a `.env` file using the provided example:
 
-Podmień wartość na swój klucz ze Spotify:
-VITE_SPOTIFY_CLIENT_ID=twoj_klucz_tutaj
+```bash
+cp .env.example .env
+```
 
-4. Uruchom serwer deweloperski:
+Set your Spotify application's Client ID:
+
+```env
+VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
+```
+
+In your Spotify Developer Dashboard, configure the redirect URI used by the application:
+
+```text
+http://localhost:5173/
+```
+
+Your Spotify application may need to be configured to allow your account to access it during development.
+
+**4. Start the development server**
 
 ```bash
 npm run dev
 ```
 
-4. Otwórz w przeglądarce adres podany w konsoli (domyślnie http://localhost:5173/).
+Open the local URL displayed in the terminal (typically `http://localhost:5173/`).
+
+## Available Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start the development server |
+| `npm run build` | Create a production build |
+| `npm run preview` | Preview the production build |
+| `npm run lint` | Run ESLint |
+
+## Project Purpose
+
+Spotify Stats was created to practice building applications with React and TypeScript, integrating external APIs, implementing OAuth authentication, and presenting data through interactive visualizations.
+
+The project demonstrates practical frontend development and API integration skills.
